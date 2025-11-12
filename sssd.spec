@@ -123,6 +123,7 @@ BuildRequires: uid_wrapper
 BuildRequires: po4a
 BuildRequires: libunistring-devel
 BuildRequires: shadow-utils-subid-devel
+BuildRequires: libcap
 
 %description
 Provides a set of daemons to manage access to remote directories and
