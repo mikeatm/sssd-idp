@@ -125,6 +125,10 @@ BuildRequires: libunistring-devel
 BuildRequires: shadow-utils-subid-devel
 BuildRequires: libcap
 BuildRequires: libcap-devel
+BuildRequires: libsemanage-devel
+BuildRequires: libldb-devel
+BuildRequires: openldap-devel
+BuildRequires: systemd
 
 %description
 Provides a set of daemons to manage access to remote directories and
@@ -535,6 +539,11 @@ autoreconf -ivf
     --with-files-provider \
     --with-libsifp \
     --with-passkey \
+    --with-semanage \
+    --with-files-provider \
+    --with-ssh \
+    --with-pam \
+    --with-systemdunitdir=%{_unitdir}\
 %if 0%{?fedora}
     --disable-polkit-rules-path \
 %endif
@@ -700,7 +709,7 @@ done
 %{_unitdir}/sssd-pac.socket
 %{_unitdir}/sssd-pac.service
 %{_unitdir}/sssd-pam.socket
-%{_unitdir}/sssd-pam-priv.socket
+%{_unitdir}/sssd-pam-priv.socket  %{!?_unitdir/%{name}/sssd-pam-priv.socket:%ghost %{_unitdir}/sssd-pam-priv.socket}
 %{_unitdir}/sssd-pam.service
 %{_unitdir}/sssd-ssh.socket
 %{_unitdir}/sssd-ssh.service
@@ -719,7 +728,6 @@ done
 
 %dir %{_libdir}/%{name}
 # The files provider is intentionally packaged in -common
-%{_libdir}/%{name}/libsss_files.so
 %{_libdir}/%{name}/libsss_simple.so
 
 #Internal shared libraries
@@ -730,7 +738,13 @@ done
 %{_libdir}/%{name}/libsss_krb5_common.so
 %{_libdir}/%{name}/libsss_ldap_common.so
 %{_libdir}/%{name}/libsss_util.so
+# These libraries may not be built if optional providers are disabled
+%if %{?_libdir}/%{name}/libsss_files.so
+%{_libdir}/%{name}/libsss_files.so
+%endif
+%if %{?_libdir}/%{name}/libsss_semanage.so
 %{_libdir}/%{name}/libsss_semanage.so
+%endif
 %{_libdir}/%{name}/libifp_iface.so
 %{_libdir}/%{name}/libifp_iface_sync.so
 %{_libdir}/%{name}/libsss_iface.so
@@ -740,7 +754,10 @@ done
 
 %{ldb_modulesdir}/memberof.so
 %{_bindir}/sss_ssh_authorizedkeys
+# Some builds skip SSH proxy support
+%if %{?_bindir}/sss_ssh_knownhostsproxy
 %{_bindir}/sss_ssh_knownhostsproxy
+%endif
 %{_sbindir}/sss_cache
 %{_libexecdir}/%{servicename}/sss_signal
 
@@ -773,9 +790,7 @@ done
 
 %{_datadir}/sssd/cfg_rules.ini
 %{_mandir}/man1/sss_ssh_authorizedkeys.1*
-%{_mandir}/man1/sss_ssh_knownhostsproxy.1*
 %{_mandir}/man5/sssd.conf.5*
-%{_mandir}/man5/sssd-files.5*
 %{_mandir}/man5/sssd-simple.5*
 %{_mandir}/man5/sssd-sudo.5*
 %{_mandir}/man5/sssd-session-recording.5*
