@@ -739,7 +739,6 @@ done
 %{_libdir}/%{name}/libsss_ldap_common.so
 %{_libdir}/%{name}/libsss_util.so
 # These libraries may not be built if optional providers are disabled
-%if %{?_libdir}/%{name}/libsss_files.so
 %{_libdir}/%{name}/libsss_files.so
 %endif
 %if %{?_libdir}/%{name}/libsss_semanage.so
