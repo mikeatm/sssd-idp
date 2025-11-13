@@ -740,10 +740,7 @@ done
 %{_libdir}/%{name}/libsss_util.so
 # These libraries may not be built if optional providers are disabled
 %{_libdir}/%{name}/libsss_files.so
-%endif
-%if %{?_libdir}/%{name}/libsss_semanage.so
 %{_libdir}/%{name}/libsss_semanage.so
-%endif
 %{_libdir}/%{name}/libifp_iface.so
 %{_libdir}/%{name}/libifp_iface_sync.so
 %{_libdir}/%{name}/libsss_iface.so
@@ -753,10 +750,7 @@ done
 
 %{ldb_modulesdir}/memberof.so
 %{_bindir}/sss_ssh_authorizedkeys
-# Some builds skip SSH proxy support
-%if %{?_bindir}/sss_ssh_knownhostsproxy
 %{_bindir}/sss_ssh_knownhostsproxy
-%endif
 %{_sbindir}/sss_cache
 %{_libexecdir}/%{servicename}/sss_signal
 
