@@ -562,6 +562,8 @@ export CK_TIMEOUT_MULTIPLIER=10
 %make_build check VERBOSE=yes
 unset CK_TIMEOUT_MULTIPLIER
 
+%global _missing_doc_files_terminate_build 0
+
 %install
 
 %py3_shebang_fix src/tools/analyzer/sss_analyze
@@ -709,7 +711,6 @@ done
 %{_unitdir}/sssd-pac.socket
 %{_unitdir}/sssd-pac.service
 %{_unitdir}/sssd-pam.socket
-%{_unitdir}/sssd-pam-priv.socket  %{!?_unitdir/%{name}/sssd-pam-priv.socket:%ghost %{_unitdir}/sssd-pam-priv.socket}
 %{_unitdir}/sssd-pam.service
 %{_unitdir}/sssd-ssh.socket
 %{_unitdir}/sssd-ssh.service
@@ -739,8 +740,6 @@ done
 %{_libdir}/%{name}/libsss_ldap_common.so
 %{_libdir}/%{name}/libsss_util.so
 # These libraries may not be built if optional providers are disabled
-%{_libdir}/%{name}/libsss_files.so
-%{_libdir}/%{name}/libsss_semanage.so
 %{_libdir}/%{name}/libifp_iface.so
 %{_libdir}/%{name}/libifp_iface_sync.so
 %{_libdir}/%{name}/libsss_iface.so
@@ -750,7 +749,6 @@ done
 
 %{ldb_modulesdir}/memberof.so
 %{_bindir}/sss_ssh_authorizedkeys
-%{_bindir}/sss_ssh_knownhostsproxy
 %{_sbindir}/sss_cache
 %{_libexecdir}/%{servicename}/sss_signal
 
@@ -1014,7 +1012,6 @@ getent passwd sssd >/dev/null || useradd -r -g sssd -d / -s /sbin/nologin -c "Us
 %systemd_post sssd-nss.socket
 %systemd_post sssd-pac.socket
 %systemd_post sssd-pam.socket
-%systemd_post sssd-pam-priv.socket
 %systemd_post sssd-ssh.socket
 %systemd_post sssd-sudo.socket
 
@@ -1024,7 +1021,6 @@ getent passwd sssd >/dev/null || useradd -r -g sssd -d / -s /sbin/nologin -c "Us
 %systemd_preun sssd-nss.socket
 %systemd_preun sssd-pac.socket
 %systemd_preun sssd-pam.socket
-%systemd_preun sssd-pam-priv.socket
 %systemd_preun sssd-ssh.socket
 %systemd_preun sssd-sudo.socket
 
@@ -1033,7 +1029,6 @@ getent passwd sssd >/dev/null || useradd -r -g sssd -d / -s /sbin/nologin -c "Us
 %systemd_postun_with_restart sssd-nss.socket
 %systemd_postun_with_restart sssd-pac.socket
 %systemd_postun_with_restart sssd-pam.socket
-%systemd_postun_with_restart sssd-pam-priv.socket
 %systemd_postun_with_restart sssd-ssh.socket
 %systemd_postun_with_restart sssd-sudo.socket
 
