@@ -453,6 +453,7 @@ use the KCM: Kerberos credentials cache.
 Summary: Kerberos plugins and OIDC helper for external identity providers.
 License: GPL-3.0-or-later
 Requires: sssd-common = %{version}-%{release}
+Requires: libjose
 
 %description idp
 This package provides Kerberos plugins that are required to enable
