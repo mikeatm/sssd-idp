@@ -5,7 +5,7 @@
 #%global build_idp 1
 #%else
 #%global build_idp 0
-%endif
+#%endif
 %global build_idp 1
 
 # we don't want to provide private python extension libs
