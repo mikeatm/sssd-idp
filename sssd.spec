@@ -1,11 +1,12 @@
 
 %global verify_signature 0
 
-%if 0%{?fedora} >= 43 || 0%{?rhel} >= 9
-%global build_idp 1
-%else
-%global build_idp 0
+#%if 0%{?fedora} >= 43 || 0%{?rhel} >= 9
+#%global build_idp 1
+#%else
+#%global build_idp 0
 %endif
+%global build_idp 1
 
 # we don't want to provide private python extension libs
 %define __provides_exclude_from %{python3_sitearch}/.*\.so$
@@ -504,10 +505,10 @@ autoreconf -ivf
     --with-test-dir=/dev/shm \
     --with-subid \
     --with-passkey \
-%if ! %{build_idp}
-    --with-id-provider-idp=no \
-%endif
+    --with-id-provider-idp=yes \
     %{nil}
+#%if ! %{build_idp}
+#%endif
 
 %make_build all docs runstatedir=%{_rundir}
 
