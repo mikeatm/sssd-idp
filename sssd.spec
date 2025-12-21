@@ -576,7 +576,7 @@ done
 touch sssd.lang
 for subpackage in sssd_ldap sssd_krb5 sssd_ipa sssd_ad sssd_proxy sssd_tools \
                   sssd_client sssd_dbus sssd_nfs_idmap sssd_winbind_idmap \
-                  libsss_certmap sssd_kcm
+                  libsss_certmap sssd_kcm sssd-idp
 do
     touch $subpackage.lang
 done
@@ -938,10 +938,8 @@ install -D -p -m 0644 %{SOURCE1} %{buildroot}%{_sysusersdir}/sssd.conf
 %{_mandir}/man8/sssd-kcm.8*
 
 %files idp
-%if %{build_idp}
 %{_libdir}/%{name}/libsss_idp.so
 %{_mandir}/man5/sssd-idp.5*
-%endif
 %{_libexecdir}/%{servicename}/oidc_child
 %{_libdir}/%{name}/modules/sssd_krb5_idp_plugin.so
 %{_datadir}/sssd/krb5-snippets/sssd_enable_idp
